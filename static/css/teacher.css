@@ -1,0 +1,546 @@
+/* Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #34495e;
+}
+
+.nav-item.active {
+    background-color: #3498db;
+}
+
+.nav-item i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.logout {
+    margin-top: auto;
+    color: #e74c3c;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f5f6fa;
+}
+
+.content-header {
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.module-filter {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+    font-size: 14px;
+}
+
+.content-header h1 {
+    color: #2c3e50;
+    font-size: 24px;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Modules List */
+.modules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.module-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.module-info h4 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.module-info p {
+    margin: 5px 0 0;
+    color: #7f8c8d;
+}
+
+.average-grade {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+/* Activities List */
+.activities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.activity-item i {
+    color: #3498db;
+    font-size: 8px;
+}
+
+.activity-date {
+    margin-left: auto;
+    color: #95a5a6;
+    font-size: 0.9em;
+}
+
+/* Courses Grid */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.course-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Add Course Form Styles */
+.add-course-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input[type="file"] {
+    padding: 8px;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group .file-info {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.submit-btn,
+.cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.submit-btn {
+    background: #27ae60;
+    color: white;
+}
+
+.submit-btn:hover {
+    background: #219a52;
+}
+
+.cancel-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #c0392b;
+}
+
+.course-type {
+    font-size: 24px;
+    color: #3498db;
+    margin-bottom: 15px;
+}
+
+.course-card h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.module-name {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+}
+
+.description {
+    color: #34495e;
+    margin: 0 0 15px 0;
+    line-height: 1.4;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.courses-filter select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #666;
+}
+
+.download-btn {
+    background: #27ae60;
+    color: white;
+}
+
+.download-btn:hover {
+    background: #219a52;
+}
+
+.course-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.view-btn {
+    background: #3498db;
+    color: white;
+}
+
+.view-btn:hover {
+    background: #2980b9;
+}
+
+.edit-btn {
+    background: #f39c12;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #d68910;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+.grades-container {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.module-info {
+    margin-bottom: 20px;
+}
+
+.module-info h2 {
+    color: #2c3e50;
+    margin: 0 0 10px 0;
+}
+
+.grades-table-container {
+    overflow-x: auto;
+}
+
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grades-table th,
+.grades-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.grades-table th {
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.grade-input {
+    width: 70px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.edit-grade-btn,
+.save-grade-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.edit-grade-btn {
+    background: #f39c12;
+}
+
+.save-grade-btn {
+    background: #27ae60;
+}
+
+.module-selector {
+    margin-bottom: 20px;
+}
+
+.module-selector select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.no-module-selected {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.attendance-container {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.attendance-table-container {
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.attendance-table th {
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.attendance-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.attendance-status.present {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.attendance-status.absent {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.present-btn,
+.absent-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 8px;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.present-btn {
+    background: #81c784;
+}
+
+.present-btn:hover,
+.present-btn.active {
+    background: #4caf50;
+}
+
+.absent-btn {
+    background: #e57373;
+}
+
+.absent-btn:hover,
+.absent-btn.active {
+    background: #f44336;
+}

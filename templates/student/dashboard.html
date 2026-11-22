@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart - Tableau de Bord Étudiant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('student_dashboard') }}" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('student_profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('student_courses') }}" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('student_grades') }}" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Mes Notes</span>
+                </a>
+                <a href="{{ url_for('student_attendance') }}" class="nav-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Bienvenue, {{ student.name }}</h1>
+            </header>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Dernières Notes</h3>
+                    <div class="grades-list">
+                        {% for grade in grades[:5] %}
+                        <div class="grade-item">
+                            <span class="module">{{ grade.module_name }}</span>
+                            <span class="grade">{{ grade.grade }}/100</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Présences Récentes</h3>
+                    <div class="attendance-list">
+                        {% for record in attendance[:5] %}
+                        <div class="attendance-item">
+                            <span class="module">{{ record.module_name }}</span>
+                            <span class="status {{ record.status }}">{{ record.status }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

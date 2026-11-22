@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mes Cours</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('teacher_dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('teacher_profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('teacher_courses') }}" class="nav-item active">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('teacher_grades') }}" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Notes</span>
+                </a>
+                <a href="{{ url_for('teacher_attendance') }}" class="nav-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Mes Cours</h1>
+                <a href="{{ url_for('add_course') }}" class="add-btn">
+                    <i class="fas fa-plus"></i> Ajouter un cours
+                </a>
+            </div>
+
+            <div class="courses-grid">
+                {% for course in courses %}
+                <div class="course-card">
+                    <div class="course-header">
+                        <h3>{{ course.title }}</h3>
+                        <span class="module-name">{{ course.module_name }}</span>
+                    </div>
+                    <p class="description">{{ course.description }}</p>
+                    <div class="file-details">
+                        <i class="fas fa-file"></i>
+                        <span>{{ course.file_path }}</span>
+                    </div>
+                    <div class="course-actions">
+                        <a href="{{ url_for('static', filename='uploads/' + course.file_path) }}" target="_blank" class="view-btn">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                        <a href="{{ url_for('static', filename='uploads/' + course.file_path) }}" download class="download-btn">
+                            <i class="fas fa-download"></i> Télécharger
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

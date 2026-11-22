@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Enseignant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('teacher_dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('teacher_profile') }}" class="nav-item active">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('teacher_courses') }}" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('teacher_grades') }}" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Notes</span>
+                </a>
+                <a href="{{ url_for('teacher_attendance') }}" class="nav-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Mon Profil</h1>
+            </header>
+
+            <div class="card profile-card">
+                <div class="profile-info">
+                    <div class="info-group">
+                        <label>Nom:</label>
+                        <span>{{ teacher.name }}</span>
+                    </div>
+                    <div class="info-group">
+                        <label>Email:</label>
+                        <span>{{ teacher.email }}</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

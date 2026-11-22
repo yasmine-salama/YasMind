@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart - Présences</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('student_dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('student_profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('student_courses') }}" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('student_grades') }}" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Mes Notes</span>
+                </a>
+                <a href="{{ url_for('student_attendance') }}" class="nav-item active">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Mes Présences</h1>
+            </header>
+
+            <div class="card">
+                <div class="attendance-filters">
+                    <div class="date-filter">
+                        <label for="attendance-date">Sélectionner une date:</label>
+                        <input type="date" id="attendance-date" class="date-input" onchange="filterByDate(this.value)">
+                    </div>
+                </div>
+
+                <div class="attendance-list">
+                    {% for record in attendance %}
+                    <div class="attendance-item" data-date="{{ record.date|format_date('%Y-%m-%d') }}">
+                        <div>
+                            <strong>{{ record.module_name }}</strong>
+                            <div>{{ record.date|format_date('%d/%m/%Y') }}</div>
+                        </div>
+                        <span class="status {{ record.status }}">
+                            {% if record.status == 'present' %}
+                                <i class="fas fa-check"></i> Présent
+                            {% else %}
+                                <i class="fas fa-times"></i> Absent
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function filterByDate(selectedDate) {
+            const items = document.querySelectorAll('.attendance-item');
+            
+            if (!selectedDate) {
+                // Show all items if no date is selected
+                items.forEach(item => item.style.display = 'flex');
+                return;
+            }
+
+            items.forEach(item => {
+                const itemDate = item.getAttribute('data-date');
+                if (itemDate === selectedDate) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

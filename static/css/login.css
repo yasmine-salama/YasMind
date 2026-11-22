@@ -1,0 +1,284 @@
+:root {
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --secondary: #2c3e50;
+    --text-dark: #2d3436;
+    --text-light: #636e72;
+    --white: #ffffff;
+    --background: #f5f6fa;
+    --error: #e74c3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--background);
+}
+
+.split-screen {
+    display: flex;
+    height: 100vh;
+}
+
+.left {
+    flex: 1;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.logo {
+    text-align: center;
+    color: var(--white);
+}
+
+.logo h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+}
+
+.logo p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.back-link {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    color: var(--text-dark);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+.login-form-container {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+}
+
+h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.welcome-text {
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+}
+
+.forgot {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.login-btn i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.login-btn:hover i {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .split-screen {
+        flex-direction: column;
+    }
+    
+    .left {
+        flex: none;
+        height: 25vh;
+        padding: 20px;
+    }
+    
+    .right {
+        flex: none;
+        height: 75vh;
+        padding: 20px;
+    }
+    
+    .back-link {
+        top: 20px;
+        left: 20px;
+    }
+    
+    .logo h1 {
+        font-size: 2.5rem;
+    }
+    
+    .logo p {
+        font-size: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Add after your existing :root variables */
+.teacher-theme {
+    --primary: #2196F3;
+    --primary-dark: #1976D2;
+    --secondary: #1565C0;
+}
+
+.teacher-theme .left {
+    background: linear-gradient(135deg, #2196F3, #1565C0);
+}
+
+.teacher-theme .login-btn {
+    background: #2196F3;
+}
+
+.teacher-theme .login-btn:hover {
+    background: #1976D2;
+}
+
+.teacher-theme .input-group input:focus {
+    border-color: #2196F3;
+}
+
+.teacher-theme .forgot,
+.teacher-theme .back-link:hover {
+    color: #2196F3;
+}
+
+.teacher-theme .remember input[type="checkbox"] {
+    accent-color: #2196F3;
+}
+
+/* Add after your teacher theme styles */
+.admin-theme {
+    --primary: #9C27B0;
+    --primary-dark: #7B1FA2;
+    --secondary: #6A1B9A;
+}
+
+.admin-theme .left {
+    background: linear-gradient(135deg, #9C27B0, #6A1B9A);
+}
+
+.admin-theme .login-btn {
+    background: #9C27B0;
+}
+
+.admin-theme .login-btn:hover {
+    background: #7B1FA2;
+}
+
+.admin-theme .input-group input:focus {
+    border-color: #9C27B0;
+}
+
+.admin-theme .forgot,
+.admin-theme .back-link:hover {
+    color: #9C27B0;
+}
+
+.admin-theme .remember input[type="checkbox"] {
+    accent-color: #9C27B0;
+}

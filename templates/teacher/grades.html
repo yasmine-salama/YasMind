@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Notes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('teacher_dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('teacher_profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('teacher_courses') }}" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('teacher_grades') }}" class="nav-item active">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Notes</span>
+                </a>
+                <a href="{{ url_for('teacher_attendance') }}" class="nav-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-content">
+                    <h1>Gestion des Notes</h1>
+                    <div class="module-selector">
+                        <select id="moduleSelect" onchange="window.location.href=this.value">
+                            {% for module in modules %}
+                            <option value="{{ url_for('teacher_grades') }}?module_id={{ module.id }}" 
+                                    {% if current_module and module.id == current_module.id %}selected{% endif %}>
+                                {{ module.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            {% if current_module %}
+            <div class="grades-container">
+                <div class="module-info">
+                    <h2>{{ current_module.name }}</h2>
+                    <p>Moyenne de la classe: {{ "%.2f"|format(class_average|default(0)) }}/20</p>
+                </div>
+
+                <div class="grades-table-container">
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Étudiant</th>
+                                <th>Note</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>
+                                    <span class="grade-display">{{ student.grade|default('-') }}/20</span>
+                                    <input type="number" class="grade-input" value="{{ student.grade }}" 
+                                           min="0" max="20" step="0.5" style="display: none;">
+                                </td>
+                                <td>
+                                    <button class="edit-grade-btn" onclick="toggleGradeEdit(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="save-grade-btn" style="display: none;" 
+                                            onclick="saveGrade(this, {{ student.id }}, {{ current_module.id }})">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="no-module-selected">
+                <p>Veuillez sélectionner un module pour gérer les notes</p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        function toggleGradeEdit(btn) {
+            const row = btn.closest('tr');
+            const display = row.querySelector('.grade-display');
+            const input = row.querySelector('.grade-input');
+            const saveBtn = row.querySelector('.save-grade-btn');
+            
+            display.style.display = 'none';
+            input.style.display = 'inline';
+            btn.style.display = 'none';
+            saveBtn.style.display = 'inline';
+        }
+
+        function saveGrade(btn, studentId, moduleId) {
+            const row = btn.closest('tr');
+            const input = row.querySelector('.grade-input');
+            const display = row.querySelector('.grade-display');
+            const editBtn = row.querySelector('.edit-grade-btn');
+            const grade = input.value;
+
+            fetch('/teacher/update_grade', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    student_id: studentId,
+                    module_id: moduleId,
+                    grade: grade
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    display.textContent = grade + '/20';
+                    display.style.display = 'inline';
+                    input.style.display = 'none';
+                    btn.style.display = 'none';
+                    editBtn.style.display = 'inline';
+                } else {
+                    alert('Erreur lors de la sauvegarde de la note');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart - Mes Notes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('student_dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('student_profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('student_courses') }}" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('student_grades') }}" class="nav-item active">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Mes Notes</span>
+                </a>
+                <a href="{{ url_for('student_attendance') }}" class="nav-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Mes Notes</h1>
+            </header>
+
+            <div class="card">
+                <table class="grades-table">
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Note</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for grade in grades %}
+                        <tr>
+                            <td>{{ grade.module_name }}</td>
+                            <td>{{ grade.grade }}/20</td>
+                            <td class="status {% if grade.grade >= 10 %}passed{% else %}failed{% endif %}">
+                                {% if grade.grade >= 10 %}
+                                    <i class="fas fa-check-circle"></i> Réussi
+                                {% else %}
+                                    <i class="fas fa-times-circle"></i> Non Réussi
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

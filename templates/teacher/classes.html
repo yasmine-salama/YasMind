@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes classes — EduSmart</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}">
+</head>
+<body>
+  <main class="dashboard-container">
+    <aside class="sidebar"><nav class="sidebar-nav">
+      <a class="nav-item" href="{{ url_for('teacher_dashboard') }}">Tableau de bord</a>
+      <a class="nav-item active" href="{{ url_for('teacher_classes') }}">Mes classes</a>
+      <a class="nav-item" href="{{ url_for('teacher_courses') }}">Mes cours</a>
+      <a class="nav-item" href="{{ url_for('teacher_grades') }}">Notes</a>
+      <a class="nav-item" href="{{ url_for('teacher_attendance') }}">Présences</a>
+      <a class="nav-item" href="{{ url_for('teacher_reports') }}">Rapports</a>
+      <a class="nav-item" href="{{ url_for('logout') }}">Déconnexion</a>
+    </nav></aside>
+    <section class="main-content">
+      <h1>Mes classes</h1>
+      <p>Classes associées aux modules qui vous sont attribués.</p>
+      {% if classes %}
+      <div class="table-container"><table><thead><tr><th>Classe</th><th>Département</th><th>Année</th></tr></thead><tbody>
+      {% for item in classes %}<tr><td>{{ item.name }}</td><td>{{ item.department or '—' }}</td><td>{{ item.year or '—' }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% else %}<p>Aucune classe n’est encore associée à vos modules.</p>{% endif %}
+    </section>
+  </main>
+</body></html>

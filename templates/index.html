@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YasMind - Empowering Every Student's Mind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="logo-container">
+                <h1 class="brand-name">YasMind</h1>
+                <span class="brand-tagline">Empowering Every Student's Mind</span>
+            </div>
+           
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="auth-btn student" onclick="window.location.href='{{ url_for('student_login') }}'">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student</span>
+                </button>
+                <button class="auth-btn teacher" onclick="window.location.href='{{ url_for('teacher_login') }}'">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher</span>
+                </button>
+                <button class="auth-btn admin" onclick="window.location.href='{{ url_for('admin_login') }}'">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>YasMind</h1>
+                <p class="hero-tagline">Empowering Every Student's Mind</p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('student_login') }}" class="cta-button">
+                        <i class="fas fa-arrow-right"></i>
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Grade Management</h3>
+                    <p>Advanced academic performance tracking and analysis system</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Attendance Tracking</h3>
+                    <p>Real-time attendance monitoring and reporting</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Comprehensive statistics and performance insights</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-book-reader"></i>
+                    <h3>Learning Resources</h3>
+                    <p>Centralized educational content management</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <h2>About YasMind</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>YasMind is a cutting-edge educational platform designed to transform the learning experience. Our innovative system combines advanced technology with educational expertise to create a powerful learning management solution that empowers both students and educators.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i class="fas fa-brain"></i>
+                            <span>Smart Learning</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-rocket"></i>
+                            <span>Innovation</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-users"></i>
+                            <span>Community</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <h2>Get in Touch</h2>
+            <div class="contact-container">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>yasmineesalamaa@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <p>+212 000000000</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location</h3>
+                    <p>Marrakech, Morocco</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2025 YasMind. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

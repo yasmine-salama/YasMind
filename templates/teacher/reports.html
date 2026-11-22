@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapports — EduSmart</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}">
+</head>
+<body>
+  <main class="dashboard-container">
+    <aside class="sidebar"><nav class="sidebar-nav">
+      <a class="nav-item" href="{{ url_for('teacher_dashboard') }}">Tableau de bord</a>
+      <a class="nav-item" href="{{ url_for('teacher_classes') }}">Mes classes</a>
+      <a class="nav-item" href="{{ url_for('teacher_courses') }}">Mes cours</a>
+      <a class="nav-item" href="{{ url_for('teacher_grades') }}">Notes</a>
+      <a class="nav-item" href="{{ url_for('teacher_attendance') }}">Présences</a>
+      <a class="nav-item active" href="{{ url_for('teacher_reports') }}">Rapports</a>
+      <a class="nav-item" href="{{ url_for('logout') }}">Déconnexion</a>
+    </nav></aside>
+    <section class="main-content">
+      <h1>Rapports par module</h1>
+      <p>Vue d’ensemble des effectifs et des moyennes disponibles.</p>
+      {% if reports %}
+      <div class="table-container"><table><thead><tr><th>Module</th><th>Étudiants évalués</th><th>Moyenne</th></tr></thead><tbody>
+      {% for item in reports %}<tr><td>{{ item.module_name }}</td><td>{{ item.student_count or 0 }}</td><td>{{ '%.2f'|format(item.average_grade) if item.average_grade is not none else '—' }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% else %}<p>Aucune donnée disponible pour le moment.</p>{% endif %}
+    </section>
+  </main>
+</body></html>

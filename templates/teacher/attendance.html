@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart - Gestion des Présences</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+           
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('teacher_dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                <a href="{{ url_for('teacher_profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mon Profil</span>
+                </a>
+                <a href="{{ url_for('teacher_courses') }}" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="{{ url_for('teacher_grades') }}" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Notes</span>
+                </a>
+                <a href="{{ url_for('teacher_attendance') }}" class="nav-item active">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="attendance-header">
+                <h2>Gestion des Présences</h2>
+                <div class="filters">
+                    <input type="date" id="attendance-date" class="form-control">
+                    <select id="module-select" class="form-control">
+                        {% for module in modules %}
+                        <option value="{{ module.id }}">{{ module.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="attendance-list">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom de l'étudiant</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Update the status cell in the table -->
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td id="status-{{ student.id }}" class="status">
+                                {{ student.status if student.status else 'Non marqué' }}
+                            </td>
+                            <td>
+                                <button onclick="markAttendance({{ student.id }}, 'present')" class="btn-present">
+                                    <i class="fas fa-check"></i> Présent
+                                </button>
+                                <button onclick="markAttendance({{ student.id }}, 'absent')" class="btn-absent">
+                                    <i class="fas fa-times"></i> Absent
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="attendance-actions">
+                <button id="save-attendance" class="btn-save">
+                    <i class="fas fa-save"></i> Enregistrer la liste
+                </button>
+                <button id="view-history" class="btn-history">
+                    <i class="fas fa-history"></i> Historique des présences
+                </button>
+            </div>
+
+            <!-- Attendance Statistics -->
+            <div class="attendance-stats">
+                <div class="stat-card">
+                    <h4>Taux de présence</h4>
+                    <div class="stat-value">{{ attendance_rate }}%</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Taux d'absence</h4>
+                    <div class="stat-value">{{ absence_rate }}%</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <style>
+    .attendance-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .filters {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .form-control {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    .table th, .table td {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .btn-present, .btn-absent {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 0.5rem;
+    }
+
+    .btn-present {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-absent {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .attendance-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-save, .btn-history {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-save {
+        background-color: #2196F3;
+        color: white;
+    }
+
+    .btn-history {
+        background-color: #607D8B;
+        color: white;
+    }
+
+    .attendance-stats {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .stat-card {
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize date with today's date
+        document.getElementById('attendance-date').valueAsDate = new Date();
+
+        // Add event listener for save button
+        document.getElementById('save-attendance').addEventListener('click', function() {
+            const moduleId = document.getElementById('module-select').value;
+            const date = document.getElementById('attendance-date').value;
+
+            if (!moduleId || !date) {
+                alert('Veuillez sélectionner un module et une date');
+                return;
+            }
+
+            fetch("{{ url_for('teacher_attendance') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    module_id: moduleId,
+                    date: date,
+                    action: 'save'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Liste de présence enregistrée avec succès');
+                    window.location.reload();
+                } else {
+                    throw new Error(data.message || 'Erreur d\'enregistrement');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Erreur: ' + error.message);
+            });
+        });
+
+        // Add event listener for view history button
+        document.getElementById('view-history').addEventListener('click', function() {
+            const moduleId = document.getElementById('module-select').value;
+        
+            if (!moduleId) {
+                alert('Veuillez sélectionner un module');
+                return;
+            }
+        
+            fetch(`/teacher/attendance_history?module_id=${moduleId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let historyHTML = `
+                            <h3>Historique des présences - ${data.module_name}</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Présents</th>
+                                        <th>Absents</th>
+                                        <th>Taux de présence</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        
+                        data.history.forEach(record => {
+                            const total = record.present_count + record.absent_count;
+                            const presenceRate = total > 0 ? 
+                                Math.round((record.present_count / total) * 100) : 0;
+                            
+                            historyHTML += `
+                                <tr>
+                                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                                    <td>${record.present_count}</td>
+                                    <td>${record.absent_count}</td>
+                                    <td>${presenceRate}%</td>
+                                </tr>
+                            `;
+                        });
+                        
+                        historyHTML += `
+                                </tbody>
+                            </table>
+                        `;
+                        
+                        // Create modal or update existing content
+                        const historyContainer = document.createElement('div');
+                        historyContainer.className = 'history-modal';
+                        historyContainer.innerHTML = historyHTML;
+                        
+                        // Add close button
+                        const closeButton = document.createElement('button');
+                        closeButton.className = 'btn-close';
+                        closeButton.innerHTML = '×';
+                        closeButton.onclick = () => historyContainer.remove();
+                        historyContainer.prepend(closeButton);
+                        
+                        document.body.appendChild(historyContainer);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors du chargement de l\'historique');
+                });
+        });
+    });
+
+    function markAttendance(studentId, status) {
+        const moduleId = document.getElementById('module-select').value;
+        const date = document.getElementById('attendance-date').value;
+
+        if (!moduleId || !date) {
+            alert('Veuillez sélectionner un module et une date');
+            return;
+        }
+
+        fetch('/teacher/update_attendance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                student_id: studentId,
+                module_id: moduleId,
+                date: date,
+                status: status
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const statusElement = document.getElementById(`status-${studentId}`);
+                if (statusElement) {
+                    statusElement.textContent = status === 'present' ? 'Présent' : 'Absent';
+                    statusElement.className = `status ${status === 'present' ? 'status-present' : 'status-absent'}`;
+                    updateAttendanceStats();
+                }
+            } else {
+                throw new Error(data.message || 'Erreur de mise à jour');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erreur: ' + error.message);
+        });
+    }
+
+    function updateAttendanceStats() {
+        const statuses = document.querySelectorAll('[id^="status-"]');
+        const total = statuses.length;
+        let present = 0;
+        let absent = 0;
+
+        statuses.forEach(status => {
+            if (status.textContent === 'Présent') present++;
+            if (status.textContent === 'Absent') absent++;
+        });
+
+        const attendanceRate = total > 0 ? (present / total) * 100 : 0;
+        const absenceRate = total > 0 ? (absent / total) * 100 : 0;
+
+        document.querySelector('.attendance-stats .stat-value:first-child').textContent = 
+            `${Math.round(attendanceRate)}%`;
+        document.querySelector('.attendance-stats .stat-value:last-child').textContent = 
+            `${Math.round(absenceRate)}%`;
+    }
+
+    // Add these styles to your existing styles
+    </script>
+    <style>
+    .status-present {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+
+    .status-absent {
+        color: #f44336;
+        font-weight: bold;
+    }
+
+    .btn-present:hover {
+        background-color: #45a049;
+    }
+
+    .btn-absent:hover {
+        background-color: #da190b;
+    }
+
+    .btn-save:hover {
+        background-color: #1976D2;
+    }
+
+    .btn-history:hover {
+        background-color: #546E7A;
+    }
+
+    .history-modal {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 80%;
+        max-height: 80vh;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .history-modal::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: -1;
+    }
+    </style>
+</body>
+</html>
+<style>
+.history-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 80%;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.history-modal h3 {
+    margin-bottom: 1.5rem;
+}
+</style>
